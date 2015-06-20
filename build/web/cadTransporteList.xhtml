@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+  <body>
+
+    <ui:composition template="./template/Template.xhtml">
+
+      <ui:define name="top">
+        Lista de Transportes
+      </ui:define>
+
+      <ui:define name="content">
+        <h:form>
+          <h:panelGrid columns="2" rendered="#{(transportes.status == 'insert') || (transportes.status == 'edit') || (transportes.status == 'view')}">
+            <h:outputText value="Nome: "/>
+            <h:inputText value="#{transportes.novoTransporte.name}" rendered="#{(transportes.status == 'edit') || (transportes.status == 'insert')}"/>
+            <h:outputText value="#{transportes.novoTransporte.name}" rendered="#{transportes.status == 'view'}"/>
+            <p><h:commandButton value="Salvar" action="#{transportes.gravaTransporte()}" rendered="#{transportes.status != 'view'}"></h:commandButton></p>
+          </h:panelGrid>
+          
+          <h:dataTable value="#{transportes.listTable}" var="t">
+            <h:column>
+              <f:facet name="header">Nome</f:facet>
+              <h:outputText value="#{t.name}"/>
+            </h:column>
+            
+            <h:column>
+              <f:facet name="header"></f:facet>
+              <h:commandLink value="Editar" action="#{transportes.editarTransporte(t)}"></h:commandLink>
+              <h:commandLink value="Ver" action="#{transportes.verTransporte(t)}"></h:commandLink>
+              <h:commandLink value="Excluir" action="#{transportes.deletarTransporte(t)}"></h:commandLink>
+            </h:column>
+          </h:dataTable>
+          
+          <p><h:commandButton value="Novo transporte" action="#{transportes.novoTransporteCad()}"></h:commandButton></p>
+        </h:form>
+      </ui:define>
+
+    </ui:composition>
+
+  </body>
+</html>

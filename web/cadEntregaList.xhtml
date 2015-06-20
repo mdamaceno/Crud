@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+  <body>
+
+    <ui:composition template="./template/Template.xhtml">
+
+      <ui:define name="top">
+        Lista de Entregas
+      </ui:define>
+
+      <ui:define name="content">
+        <h:form>
+          <h:panelGrid columns="2" rendered="#{(entregas.status == 'insert') || (entregas.status == 'edit') || (entregas.status == 'view')}">
+            
+            <h:outputText value="Produto: "/>
+            <h:inputText value="#{entregas.novaEntrega.productName}" rendered="#{(entregas.status == 'edit') || (entregas.status == 'insert')}"/>
+            <h:outputText value="#{entregas.novaEntrega.productName}" rendered="#{entregas.status == 'view'}"/>
+            
+            <h:outputText value="Preço: "/>
+            <h:inputText value="#{entregas.novaEntrega.price}" rendered="#{(entregas.status == 'edit') || (entregas.status == 'insert')}">
+              <f:convertNumber currencySymbol="R$" type="currency"></f:convertNumber>
+            </h:inputText>
+            <h:outputText value="#{entregas.novaEntrega.price}" rendered="#{entregas.status == 'view'}"/>
+            
+            <h:outputText value="Cliente: "/>
+            <h:selectOneListbox size="1" value="#{entregas.idCliente}">
+              <f:selectItems value="#{entregas.listaClientes}" var="e" itemLabel="#{e.name}" itemValue="#{e.id}">
+              </f:selectItems>
+            </h:selectOneListbox>
+            
+            <h:outputText value="Entregador: "/>
+            <h:selectOneListbox size="1" value="#{entregas.idEntregador}">
+              <f:selectItems value="#{entregas.listaEntregadores}" var="en" itemLabel="#{en.name}" itemValue="#{en.id}">
+              </f:selectItems>
+            </h:selectOneListbox>
+            
+            <h:outputText value="Transporte: "/>
+            <h:selectOneListbox size="1" value="#{entregas.idTransporte}">
+              <f:selectItems value="#{entregas.listaTransportes}" var="t" itemLabel="#{t.name}" itemValue="#{t.id}">
+              </f:selectItems>
+            </h:selectOneListbox>
+            
+            <p><h:commandButton value="Salvar" action="#{entregas.gravaEntrega()}" rendered="#{entregas.status != 'view'}"></h:commandButton></p>
+            
+          </h:panelGrid>
+          
+          <h:dataTable value="#{entregas.listTable}" var="en">
+            <h:column>
+              <f:facet name="header">Produto</f:facet>
+              <h:outputText value="#{en.productName}"/>
+            </h:column>
+            
+            <h:column>
+              <f:facet name="header">Endereço</f:facet>
+              <h:outputText value="#{en.destinationAddress}"/>
+            </h:column>
+            
+            <h:column>
+              <f:facet name="header">Nome do cliente</f:facet>
+              <h:outputText value="#{en.clientId.name}"/>
+            </h:column>
+            
+            <h:column>
+              <f:facet name="header">Transporte</f:facet>
+              <h:outputText value="#{en.transportId.name}"/>
+            </h:column>
+            
+            <h:column>
+              <f:facet name="header">Entregador</f:facet>
+              <h:outputText value="#{en.deliveryManId.name}"/>
+            </h:column>
+          </h:dataTable>
+          
+          <p><h:commandButton value="Nova entrega" action="#{entregas.novaEntregaCad()}"></h:commandButton></p>
+        </h:form>
+      </ui:define>
+
+    </ui:composition>
+
+  </body>
+</html>
