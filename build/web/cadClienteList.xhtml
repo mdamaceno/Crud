@@ -36,7 +36,11 @@
           <h:inputSecret value="#{clientes.novoCliente.password}" rendered="#{(clientes.status == 'edit') || (clientes.status == 'insert')}" />
           <h:outputText value="#{clientes.novoCliente.password}" rendered="#{clientes.status == 'view'}" />
           
-          <p><h:commandButton value="Salvar" action="#{clientes.gravaCliente()}" rendered="#{clientes.status == 'edit'}"></h:commandButton></p>
+          <h:outputText value="Permissão: "/>
+          <h:inputText value="#{clientes.novoCliente.permission}" rendered="#{(clientes.status == 'edit') || (clientes.status == 'insert')}" />
+          <h:outputText value="#{clientes.novoCliente.permission}" rendered="#{clientes.status == 'view'}" />
+          
+          <p><h:commandButton value="Salvar" action="#{clientes.gravaCliente()}" rendered="#{clientes.status != 'view'}"></h:commandButton></p>
         </h:panelGrid>
         
         
@@ -56,6 +60,12 @@
               <f:facet name="header">Gênero</f:facet>
               <h:outputText rendered="#{c.gender == 0}" value="Masculino"/>
               <h:outputText rendered="#{c.gender == 1}" value="Feminino"/>
+            </h:column>
+
+            <h:column>
+              <f:facet name="header">Permissão</f:facet>
+              <h:outputText rendered="#{c.permission == 0}" value="Adminstrador"/>
+              <h:outputText rendered="#{c.permission == 1}" value="Cliente"/>
             </h:column>
             
             <h:column>

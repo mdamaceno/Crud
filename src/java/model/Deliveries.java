@@ -41,24 +41,24 @@ public class Deliveries implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
-  @Column(nullable = false, name="id")
+  @Column(nullable = false)
   private Integer id;
   @Column(name = "product_name", length = 255)
   private String productName;
   @Column(name = "destination_address", length = 255)
   private String destinationAddress;
   // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-  @Column(name = "price", precision = 12)
+  @Column(precision = 12, name = "price")
   private Float price;
-  @Column(name = "distance", precision = 12)
+  @Column(precision = 12, name = "distance")
   private Float distance;
-  @JoinColumn(name = "client_id", referencedColumnName = "client_id", nullable = false)
+  @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
   @ManyToOne(optional = false)
   private Clients clientId;
-  @JoinColumn(name = "delivery_man_id", referencedColumnName = "delivery_man_id", nullable = false)
+  @JoinColumn(name = "delivery_man_id", referencedColumnName = "id", nullable = false)
   @ManyToOne(optional = false)
   private DeliveryMen deliveryManId;
-  @JoinColumn(name = "transport_id", referencedColumnName = "transport_id", nullable = false)
+  @JoinColumn(name = "transport_id", referencedColumnName = "id", nullable = false)
   @ManyToOne(optional = false)
   private Transports transportId;
 

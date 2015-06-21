@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
   @NamedQuery(name = "Clients.findByAddress", query = "SELECT c FROM Clients c WHERE c.address = :address"),
   @NamedQuery(name = "Clients.findByGender", query = "SELECT c FROM Clients c WHERE c.gender = :gender"),
   @NamedQuery(name = "Clients.findByEmail", query = "SELECT c FROM Clients c WHERE c.email = :email"),
+  @NamedQuery(name = "Clients.findByPermission", query = "SELECT c FROM Clients c WHERE c.permission = :permission"),
   @NamedQuery(name = "Clients.findByPassword", query = "SELECT c FROM Clients c WHERE c.password = :password")})
 public class Clients implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -50,6 +51,8 @@ public class Clients implements Serializable {
   private String email;
   @Column(length = 255)
   private String password;
+  @Column(nullable = false)
+  private Integer permission;
 
   public Clients() {
   }
@@ -105,6 +108,14 @@ public class Clients implements Serializable {
   public void setPassword(String password) {
     this.password = password;
   }
+
+  public Integer getPermission() {
+    return permission;
+  }
+
+  public void setPermission(Integer permission) {
+    this.permission = permission;
+  } 
 
   @Override
   public int hashCode() {

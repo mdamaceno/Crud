@@ -23,27 +23,40 @@
             
             <h:outputText value="Preço: "/>
             <h:inputText value="#{entregas.novaEntrega.price}" rendered="#{(entregas.status == 'edit') || (entregas.status == 'insert')}">
-              <f:convertNumber currencySymbol="R$" type="currency"></f:convertNumber>
+              <f:convertNumber type="currency"></f:convertNumber>
             </h:inputText>
-            <h:outputText value="#{entregas.novaEntrega.price}" rendered="#{entregas.status == 'view'}"/>
+            <h:outputText value="R$ #{entregas.novaEntrega.price}" rendered="#{entregas.status == 'view'}"/>
+            
+            <h:outputText value="Endereço: "/>
+            <h:inputText value="#{entregas.novaEntrega.destinationAddress}" rendered="#{(entregas.status == 'edit') || (entregas.status == 'insert')}">
+            </h:inputText>
+            <h:outputText value="#{entregas.novaEntrega.destinationAddress}" rendered="#{entregas.status == 'view'}"/>
+            
+            <h:outputText value="Distância: "/>
+            <h:inputText value="#{entregas.novaEntrega.distance}" rendered="#{(entregas.status == 'edit') || (entregas.status == 'insert')}">
+            </h:inputText>
+            <h:outputText value="#{entregas.novaEntrega.distance} km" rendered="#{entregas.status == 'view'}"/>
             
             <h:outputText value="Cliente: "/>
-            <h:selectOneListbox size="1" value="#{entregas.idCliente}">
+            <h:selectOneListbox size="1" value="#{entregas.idCliente}" rendered="#{(entregas.status == 'edit') || (entregas.status == 'insert')}">
               <f:selectItems value="#{entregas.listaClientes}" var="e" itemLabel="#{e.name}" itemValue="#{e.id}">
               </f:selectItems>
             </h:selectOneListbox>
+            <h:outputText value="#{entregas.novaEntrega.clientId.name}" rendered="#{entregas.status == 'view'}"/>
             
             <h:outputText value="Entregador: "/>
-            <h:selectOneListbox size="1" value="#{entregas.idEntregador}">
+            <h:selectOneListbox size="1" value="#{entregas.idEntregador}" rendered="#{(entregas.status == 'edit') || (entregas.status == 'insert')}">
               <f:selectItems value="#{entregas.listaEntregadores}" var="en" itemLabel="#{en.name}" itemValue="#{en.id}">
               </f:selectItems>
             </h:selectOneListbox>
+            <h:outputText value="#{entregas.novaEntrega.deliveryManId.name}" rendered="#{entregas.status == 'view'}"/>
             
             <h:outputText value="Transporte: "/>
-            <h:selectOneListbox size="1" value="#{entregas.idTransporte}">
+            <h:selectOneListbox size="1" value="#{entregas.idTransporte}" rendered="#{(entregas.status == 'edit') || (entregas.status == 'insert')}">
               <f:selectItems value="#{entregas.listaTransportes}" var="t" itemLabel="#{t.name}" itemValue="#{t.id}">
               </f:selectItems>
             </h:selectOneListbox>
+            <h:outputText value="#{entregas.novaEntrega.transportId.name}" rendered="#{entregas.status == 'view'}"/>
             
             <p><h:commandButton value="Salvar" action="#{entregas.gravaEntrega()}" rendered="#{entregas.status != 'view'}"></h:commandButton></p>
             
@@ -73,6 +86,23 @@
             <h:column>
               <f:facet name="header">Entregador</f:facet>
               <h:outputText value="#{en.deliveryManId.name}"/>
+            </h:column>
+            
+            <h:column>
+              <f:facet name="header">Distância</f:facet>
+              <h:outputText value="#{en.distance} km"/>
+            </h:column>
+            
+            <h:column>
+              <f:facet name="header">Preço</f:facet>
+              <h:outputText value="R$ #{en.price}"/>
+            </h:column>
+            
+            <h:column>
+              <f:facet name="header"></f:facet>
+              <h:commandLink value="Editar" action="#{entregas.editarEntrega(en)}"></h:commandLink>
+              <h:commandLink value="Ver" action="#{entregas.verEntrega(en)}"></h:commandLink>
+              <h:commandLink value="Excluir" action="#{entregas.deletarEntrega(en)}"></h:commandLink>
             </h:column>
           </h:dataTable>
           

@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import model.Clients;
@@ -134,5 +135,19 @@ public class ClientsJpaController implements Serializable {
       em.close();
     }
   }
-  
+
+  public Clients findByEmailAndSenha(String email, String senha) {
+    try {
+      Query qry = getEntityManager().createQuery("select c from clients c "
+              + "where c.email = :email and u.password = :password ");
+
+      qry.setParameter("email", email);
+      qry.setParameter("password", senha);
+
+      return (Clients) qry.getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
 }

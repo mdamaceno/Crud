@@ -6,6 +6,8 @@
 package controller;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.DataModel;
@@ -20,6 +22,7 @@ import model.dao.ClientsJpaController;
 import model.dao.DeliveriesJpaController;
 import model.dao.DeliveryMenJpaController;
 import model.dao.TransportsJpaController;
+import model.dao.exceptions.NonexistentEntityException;
 
 /**
  *
@@ -28,7 +31,7 @@ import model.dao.TransportsJpaController;
 @ManagedBean(name = "entregas")
 @ViewScoped
 public class EntregasManager {
-  
+
   private final EntityManagerFactory emf;
   private StatusCrud status;
   private Deliveries novaEntrega;
@@ -41,25 +44,57 @@ public class EntregasManager {
     emf = Persistence.createEntityManagerFactory("CrudPU");
     status = StatusCrud.none;
   }
-  
+
   public String callCadEntregas() {
     return "cadEntregaList";
   }
-  
+
   public String gravaEntrega() {
-    novaEntrega.setClientId(new ClientsJpaController(emf).findClients(idCliente));
-    novaEntrega.setTransportId(new TransportsJpaController(emf).findTransports(idTransporte));
-    novaEntrega.setDeliveryManId(new DeliveryMenJpaController(emf).findDeliveryMen(idEntregador));
-    
-    new DeliveriesJpaController(emf).create(novaEntrega);
+    if (status == StatusCrud.insert) {
+      novaEntrega.setClientId(new ClientsJpaController(emf).findClients(idCliente));
+      novaEntrega.setTransportId(new TransportsJpaController(emf).findTransports(idTransporte));
+      novaEntrega.setDeliveryManId(new DeliveryMenJpaController(emf).findDeliveryMen(idEntregador));
+
+      new DeliveriesJpaController(emf).create(novaEntrega);
+    } else if (status == StatusCrud.edit) {
+      try {
+        new DeliveriesJpaController(emf).edit(novaEntrega);
+      } catch (Exception ex) {
+        Logger.getLogger(EntregasManager.class.getName()).log(Level.SEVERE, null, ex);
+      }
+    }
+
     status = StatusCrud.none;
     return null;
   }
-  
+
   public DataModel<Deliveries> getListTable() {
     return new ListDataModel<>(new DeliveriesJpaController(emf).findDeliveriesEntities());
   }
-  
+
+  public String editarEntrega(Deliveries dl) {
+    novaEntrega = dl;
+    status = StatusCrud.edit;
+    return null;
+  }
+
+  public String deletarEntrega(Deliveries dl) {
+    try {
+      new DeliveriesJpaController(emf).destroy(dl.getId());
+    } catch (NonexistentEntityException ex) {
+      Logger.getLogger(EntregasManager.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    status = StatusCrud.none;
+    return null;
+  }
+
+  public String verEntrega(Deliveries dl) {
+    novaEntrega = dl;
+    status = StatusCrud.view;
+    return null;
+  }
+
   public String novaEntregaCad() {
     status = StatusCrud.insert;
     novaEntrega = new Deliveries();
@@ -68,15 +103,15 @@ public class EntregasManager {
     novaEntrega.setDeliveryManId(new DeliveryMen());
     return null;
   }
-  
+
   public List<Clients> getListaClientes() {
     return new ClientsJpaController(emf).findClientsEntities();
   }
-  
+
   public List<Transports> getListaTransportes() {
     return new TransportsJpaController(emf).findTransportsEntities();
   }
-  
+
   public List<DeliveryMen> getListaEntregadores() {
     return new DeliveryMenJpaController(emf).findDeliveryMenEntities();
   }
@@ -121,7 +156,4 @@ public class EntregasManager {
     this.idEntregador = idEntregador;
   }
 
-  
-  
-  
 }
