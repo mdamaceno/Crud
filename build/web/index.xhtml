@@ -13,6 +13,18 @@
       </ui:define>
 
       <ui:define name="content">
+        
+        <div>
+          <h:form rendered="#{login.email==null}">
+            <h:inputText value="#{login.email}"></h:inputText>
+            <h:inputText value="#{login.senha}"></h:inputText>
+            <br/>
+            <h:commandButton value="Entrar" action="#{login.loginAction()}"></h:commandButton>
+            <br/>
+            <h:messages showDetail="true" showSummary="true" />
+          </h:form>
+        </div>
+        
         <div>
           
           <h:form>

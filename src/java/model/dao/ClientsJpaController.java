@@ -138,8 +138,8 @@ public class ClientsJpaController implements Serializable {
 
   public Clients findByEmailAndSenha(String email, String senha) {
     try {
-      Query qry = getEntityManager().createQuery("select c from clients c "
-              + "where c.email = :email and u.password = :password ");
+      Query qry = getEntityManager().createQuery("select c from Clients c "
+              + "where c.email = :email and c.password = :password ");
 
       qry.setParameter("email", email);
       qry.setParameter("password", senha);
