@@ -7,7 +7,7 @@ package controller;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -19,7 +19,7 @@ import model.dao.ClientsJpaController;
  * @author mdamaceno
  */
 @ManagedBean(name = "login")
-@ViewScoped
+@SessionScoped
 public class LoginManager {
 
   private String email, senha;
@@ -41,10 +41,10 @@ public class LoginManager {
               new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Login ou Senha Incorretos"));
       return "";
     } else {
-      if (cliente.getPermission() == 1) {
-        return "index";
+      if (cliente.getPermission() == 0) {
+        return "direcionamento";
       } else {
-        return "index";
+        return "direcionamento";
       }
     }
   }

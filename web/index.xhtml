@@ -13,30 +13,28 @@
       </ui:define>
 
       <ui:define name="content">
-        
+
         <div>
-          <h:form rendered="#{login.email==null}">
-            <h:inputText value="#{login.email}"></h:inputText>
-            <h:inputText value="#{login.senha}"></h:inputText>
-            <br/>
-            <h:commandButton value="Entrar" action="#{login.loginAction()}"></h:commandButton>
-            <br/>
-            <h:messages showDetail="true" showSummary="true" />
+          <h:form rendered="#{login.cliente==null}">
+
+            <h:panelGrid columns="2">
+              
+              <h:outputText value="Email" ></h:outputText>
+              <h:inputText value="#{login.email}"></h:inputText>
+
+              <h:outputText value="Senha" ></h:outputText>
+              <h:inputSecret value="#{login.senha}"></h:inputSecret>
+              
+              <br/>
+              <h:commandButton value="Entrar" action="#{login.loginAction()}"></h:commandButton>
+              
+              <br/>
+              <h:messages showDetail="true" showSummary="true" />
+              
+            </h:panelGrid>
           </h:form>
-        </div>
-        
-        <div>
-          
-          <h:form>
-            <h:commandButton value="Clientes" action="#{clientes.callCadClientes()}" />
-            <h:commandButton value="Transportes" action="#{transportes.callCadTransportes()}" />
-            <h:commandButton value="Entregadores" action="#{entregadores.callCadEntregadores()}" />
-            <h:commandButton value="Entregas" action="#{entregas.callCadEntregas()}" />
-          </h:form>
-          
         </div>
       </ui:define>
-
     </ui:composition>
 
   </body>
